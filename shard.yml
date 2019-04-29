@@ -1,0 +1,18 @@
+---
+name: colorls
+version: 0.1.0
+
+authors:
+  - Jay Dorsey <jaydorsey@fastmail.com>
+
+targets:
+  colorls:
+    main: src/colorls.cr
+
+dependencies:
+  termbox:
+    github: andrewsuzuki/termbox-crystal
+
+crystal: 0.28.0
+
+license: MIT
