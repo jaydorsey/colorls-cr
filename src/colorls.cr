@@ -1,16 +1,15 @@
 require "option_parser"
 require "colorize"
 require "termbox"
-require "./styler"
-require "./formatters/standard_formatter"
-require "./formatters/long_formatter"
+require "./colorls/*"
+require "./colorls/formatters/*"
 
 include Termbox
 
-class Colorls
+module Colorls
   VERSION = "0.1.1"
 
-  def initialize(args)
+  def self.call(args)
     TermboxBindings.tb_init
     width = TermboxBindings.tb_width
     TermboxBindings.tb_shutdown
@@ -22,10 +21,11 @@ class Colorls
 
     OptionParser.parse! do |parser|
       parser.banner = "Usage: colorls [arguments]"
-      parser.on("-l", "--long", "Length-wise") { option_long = true }
       parser.on("-a", "--all", "Show all files & folders") { option_all = true }
-      parser.on("-v", "--version", "Print version") { puts Colorls::VERSION; exit }
+      parser.on("-l", "--long", "Length-wise") { option_long = true }
       parser.on("-r", "--report", "Print summary") { option_report = true }
+      parser.on("-s", "--setup", "Setup & generate config files") { Colorls::Setup.call; exit }
+      parser.on("-v", "--version", "Print version") { puts Colorls::VERSION; exit }
       parser.on("-al", "Show all files & folders, lengthwise") { option_all = true; option_long = true }
       parser.on("-h", "--help", "Show this help") { puts parser; exit }
     end
@@ -84,9 +84,9 @@ class Colorls
     end
 
     if option_long
-      LongFormatter.call(files, column_width)
+      Colorls::Formatters::LongFormatter.call(files, column_width)
     else
-      StandardFormatter.call(files, column_width, columns)
+      Colorls::Formatters::StandardFormatter.call(files, column_width, columns)
     end
 
     if option_report
@@ -107,4 +107,4 @@ class Colorls
   end
 end
 
-Colorls.new(ARGV)
+Colorls.call(ARGV)

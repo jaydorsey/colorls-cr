@@ -18,6 +18,8 @@ Put the generated binary in your $PATH, and run `colorls`. You can setup an alia
 
     alias ls="colorls --report"
 
+Run `colorls -s` to generate a default configuration file.
+
 ### Icons & colors
 
 To customize icons & colors, add a `~/.config/colorls-cr/config.yaml` or
