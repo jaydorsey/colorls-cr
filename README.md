@@ -1,14 +1,18 @@
 # colorls-cr
 
-A command line tool for adding icons to ls output, similar to [colorls](https://github.com/athityakumar/colorls).
+A command line tool, written in Crystal for adding icons to ls output, similar to [colorls](https://github.com/athityakumar/colorls).
 
-This is my first tool written in Crystal, for fun.
+Example output:
+
+![image](https://user-images.githubusercontent.com/191564/57423344-a1582700-71e1-11e9-9310-e8f041843384.png)
 
 ## Installation
 
 - Install crystal
 - Install a powerline font for your terminal
-- Clone the repo
+  - Download & install a release from [Nerd Fonts](http://nerdfonts.com/#downloads); **or**
+  - Install a powerline font using homebrew (`brew cask install font-droid-sans-mono-for-powerline`)
+- Clone the repo & `cd` into it
 - `shards install`
 - `crystal build src/colorls.cr`
 
@@ -18,47 +22,31 @@ Put the generated binary in your $PATH, and run `colorls`. You can setup an alia
 
     alias ls="colorls --report"
 
-Run `colorls -s` to generate a default configuration file.
+Run `colorls -s` to generate a default configuration file. By default, the file is placed in
+`~/.config/colorls-cr/config.yaml`
+
+## Uninstallation
+
+- Delete the binary
+- Delete the config file `rm -rf ~/.config/colorls-cr/`
 
 ### Icons & colors
 
 To customize icons & colors, add a `~/.config/colorls-cr/config.yaml` or
 `~/.colorls-cr.yaml` file with your icon & color mappings. An example
-yaml file:
-
-```yaml
----
-colors:
-  default: white
-  directory: blue
-  executable: green
-  file: light_yellow
-icons:
-  default: "\uf15b"
-  folder: "\uf07b"
-  .git: "\uf1d3"
-  .gitignore: "\uf1d3"
-  Gemfile: "\ue21e"
-  Gemfile.lock: "\ue21e"
-  .rb: "\ue21e"
-  yarn.lock: "\ue718"
-  .yml: "\uf481"
-  .yaml: "\uf481"
-  .editorconfig: "\uf719"
-  tags: "\uf02b"
-  tags.lock: "\uf02b"
-```
+yaml file is generated at `~/.config/colorls-cr/config.yaml` when you run
+`colorls -s`
 
 Available colors can be any string supported by [Colorize](https://crystal-lang.org/api/0.28.0/Colorize.html)
 
-Icons can be any Unicode mapping for your font. Use the [nerdfonts cheatsheet](http://nerdfonts.com/#cheat-sheet) to
-look up code points if you're using [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts)
+Icons can be any Unicode mapping for your font. Use the [nerdfonts cheatsheet](http://nerdfonts.com/#cheat-sheet)
+to look up code points if you're using [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts)
 
-## TODO
+## Things to do
 
-- Additional flags/options
-- Tests
-- Setup/config.yaml generator
+- [ ] Additional flags/options
+- [ ] Tests
+- [x] Setup/config.yaml generator
 
 ## Contributing
 
