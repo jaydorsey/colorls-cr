@@ -14,7 +14,7 @@ Example output:
   - Install a powerline font using homebrew (`brew cask install font-droid-sans-mono-for-powerline`)
 - Clone the repo & `cd` into it
 - `shards install`
-- `crystal build src/colorls.cr`
+- `crystal build src/colorls.cr --no-debug --release`
 
 ## Usage
 
