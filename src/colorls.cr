@@ -48,38 +48,61 @@ module Colorls
 
     # TODO: Sort by different things
     file_names.sort_by! { |file|
-      if File.info(File.join(path, file)).directory?
+      if File.directory?(File.join(path, file))
         "0#{file}"
       else
         "1#{file}"
       end
     }
 
-    files = Array({filename: String, size: UInt64, modification_time: Time, owner: UInt32, group: UInt32, type: Symbol, absolute_path: String, extension: String, relative_path: String, permissions: File::Permissions}).new
+    files = Array({filename: String, long_filename: String, size: UInt64, modification_time: Time, owner: UInt32, group: UInt32, type: Symbol, absolute_path: String, extension: String, relative_path: String, real_path: String, permissions: File::Permissions}).new
 
     file_names.each do |file_or_dir|
       relative_path = File.join(path, file_or_dir)
       absolute_path = File.expand_path(relative_path)
 
+      real_path = begin
+        File.real_path(relative_path)
+      rescue
+        File.readlink(relative_path)
+      end
+
       file_type = if File.directory?(relative_path)
                     :directory
                   elsif File.executable?(relative_path)
                     :executable
+                  elsif File.symlink?(relative_path)
+                    :symlink
                   else
                     :file
                   end
 
+      # File size won't be found for a symlinked file that has a missing origin file
+      file_size = begin
+        File.size(relative_path)
+      rescue
+        0_u64
+      end
+
+      long_filename = if file_type == :symlink
+                        "#{file_or_dir} ~> #{real_path}"
+                      else
+                        file_or_dir
+                      end
+
       files << {
         filename:          file_or_dir,
-        size:              File.info(relative_path).size,
-        modification_time: File.info(relative_path).modification_time,
-        owner:             File.info(relative_path).owner,
-        group:             File.info(relative_path).group,
+        long_filename:     long_filename,
+        size:              file_size,
+        modification_time: File.info(relative_path, follow_symlinks: false).modification_time,
+        owner:             File.info(relative_path, follow_symlinks: false).owner,
+        group:             File.info(relative_path, follow_symlinks: false).group,
         type:              file_type,
-        absolute_path:     absolute_path,
+        absolute_path:     absolute_path, # not used in styler
         extension:         File.extname(relative_path),
-        relative_path:     relative_path,
-        permissions:       File.info(relative_path).permissions,
+        relative_path:     relative_path, # not used in styler
+        real_path:         real_path,     # not used in styler
+        permissions:       File.info(relative_path, follow_symlinks: false).permissions,
       }
     end
 

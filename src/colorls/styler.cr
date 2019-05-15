@@ -48,6 +48,7 @@ module Colorls
     directory: blue
     executable: green
     file: light_yellow
+    symlink: light_cyan
   icons:
     default: \"\uf15b\"
     folder: \"\uf07b\""
@@ -56,6 +57,10 @@ module Colorls
 
     def self.filename(file : NamedTuple) : Colorize::Object
       file[:filename].colorize(color(file))
+    end
+
+    def self.long_filename(file : NamedTuple) : Colorize::Object
+      file[:long_filename].colorize(color(file))
     end
 
     def self.icon(file : NamedTuple) : Colorize::Object
@@ -70,16 +75,12 @@ module Colorls
       icon.colorize(color(file))
     end
 
+    # Output colors are based on the file type and are limited to the colors supported by
+    # [Colorize](https://crystal-lang.org/api/0.28.0/Colorize.html)
     def self.color(file : NamedTuple) : Symbol
-      color = if file[:type] == :directory
-                config["colors"]["directory"]
-              elsif file[:type] == :executable
-                config["colors"]["executable"]
-              elsif file[:type] == :file
-                config["colors"]["file"]
-              else
-                config["colors"]["default"]
-              end
+      color_key = file[:type].to_s
+
+      color = config["colors"][color_key]? || config["colors"]["default"]?
 
       COLORS[color]? || :white
     end
