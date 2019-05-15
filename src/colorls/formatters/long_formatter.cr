@@ -10,7 +10,7 @@ module Colorls
             file[:size],
             file[:modification_time],
             Styler.icon(file),
-            Styler.filename(file),
+            Styler.long_filename(file),
           ]
         end
       end

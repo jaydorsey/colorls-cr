@@ -13,7 +13,7 @@ module Colorls
       else
         puts "  Generating config file at #{config_file.to_s}".colorize(:green)
         File.write(config_file, "---
-# Available colors from https://crystal-lang.org/api/0.27.2/Colorize.html
+# Available colors from https://crystal-lang.org/api/0.28.0/Colorize.html
 # default
 # black
 # red
@@ -36,6 +36,7 @@ colors:
   directory: blue
   executable: green
   file: light_yellow
+  symlink: light_magenta
 # Look up unicode mappings at http://nerdfonts.com/#cheat-sheet
 icons:
   default: \"\\uf15b\"
@@ -71,6 +72,7 @@ icons:
   .pptx: \"\\uf1c4\"
   .psd: \"\\ue7b8\"
   .py: \"\\ue606\"
+  .gemrc: \"\\ue21e\"
   Gemfile: \"\\ue21e\"
   Gemfile.lock: \"\\ue21e\"
   .rb: \"\\ue21e\"
