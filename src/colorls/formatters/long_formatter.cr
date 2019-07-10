@@ -5,9 +5,9 @@ module Colorls
         longest_size = files.max_by { |file| file[:size] }[:size].to_s.size
 
         files.each do |file|
-          puts "  %s % #{10}s B   %s  %s  %-#{column_width}s" % [
+          puts "  %s % #{10}s   %s  %s  %-#{column_width}s" % [
             file[:permissions].to_s[0..9],
-            file[:size],
+            file[:size].humanize_bytes(precision: 2),
             file[:modification_time],
             Styler.icon(file),
             Styler.long_filename(file),
