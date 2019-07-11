@@ -13,6 +13,6 @@ def File.readlink(path)
   elsif size > 1024
     raise "buffer too small"
   else
-    return String.new(buf.to_unsafe, size)
+    String.new(buf.to_unsafe, size)
   end
 end

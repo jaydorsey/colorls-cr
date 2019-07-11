@@ -1,1 +1,33 @@
+---
 language: crystal
+
+crystal:
+  - latest
+  - nightly
+
+# https://github.com/andrewsuzuki/termbox-crystal/blob/master/install-termbox.sh
+before_install:
+  - git clone https://github.com/nsf/termbox lib-termbox
+  - cd "lib-termbox"
+  - ./waf configure --prefix=/usr
+  - ./waf
+  - sudo ./waf install --destdir=/
+  - cd ..
+
+install:
+  - shards install
+  - shards build
+
+before_script:
+  - bin/ameba
+  - crystal tool format --check
+
+script:
+  - crystal spec --warnings all --error-on-warnings
+
+after_success:
+  - crystal docs
+
+addons:
+  apt:
+    update: true
