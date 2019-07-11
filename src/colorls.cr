@@ -55,7 +55,7 @@ module Colorls
       end
     }
 
-    files = Array({filename: String, long_filename: String, size: UInt64, modification_time: Time, owner: UInt32, group: UInt32, type: Symbol, absolute_path: String, extension: String, relative_path: String, real_path: String, permissions: File::Permissions}).new
+    files = Array({filename: String, long_filename: String, size: UInt64, modification_time: String, owner: UInt32, group: UInt32, type: Symbol, absolute_path: String, extension: String, relative_path: String, real_path: String, permissions: File::Permissions}).new
 
     file_names.each do |file_or_dir|
       relative_path = File.join(path, file_or_dir)
@@ -89,12 +89,19 @@ module Colorls
                       else
                         file_or_dir
                       end
-
+                      
+      mtime = File.info(relative_path, follow_symlinks: false).modification_time		  
+	  file_mtime = if Time.now.to_s("%Y") == mtime.to_s("%Y")
+		             mtime.to_s("%b %e %H:%M")
+		  	       else
+		             mtime.to_s("%b %e  %Y")
+		           end 
+		           
       files << {
         filename:          file_or_dir,
         long_filename:     long_filename,
         size:              file_size,
-        modification_time: File.info(relative_path, follow_symlinks: false).modification_time,
+        modification_time: file_mtime,
         owner:             File.info(relative_path, follow_symlinks: false).owner,
         group:             File.info(relative_path, follow_symlinks: false).group,
         type:              file_type,
