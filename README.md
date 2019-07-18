@@ -12,9 +12,14 @@ Example output:
 - Install a powerline font for your terminal
   - Download & install a release from [Nerd Fonts](http://nerdfonts.com/#downloads); **or**
   - Install a powerline font using homebrew (`brew cask install font-droid-sans-mono-for-powerline`)
-- Clone the repo & `cd` into it
-- `shards install`
-- `crystal build src/colorls.cr --no-debug --release`
+- Install the termbox libraries
+  - For macOS, try `brew install termbox`
+  - For Linux or macOS, you can also try:
+    - The [termbox](https://github.com/nsf/termbox) installation instructions
+    - The [termbox-crystal](https://github.com/andrewsuzuki/termbox-crystal/blob/master/install-termbox.sh) installation script
+- Clone this repo with `git clone https://github.com/jaydorsey/colorls-cr && cd colorls-cr`
+- Run `shards install` to install application dependencies
+- Build the binary with `crystal build src/colorls.cr --no-debug --release`
 
 ## Usage
 
@@ -37,13 +42,13 @@ To customize icons & colors, add a `~/.config/colorls-cr/config.yaml` or
 yaml file is generated at `~/.config/colorls-cr/config.yaml` when you run
 `colorls -s`
 
-Available colors can be any string supported by [Colorize](https://crystal-lang.org/api/0.28.0/Colorize.html)
+Available colors can be any string supported by [Colorize](https://crystal-lang.org/api/0.29.0/Colorize.html)
 
 Icons can be any Unicode mapping for your font. Use the [nerdfonts cheatsheet](http://nerdfonts.com/#cheat-sheet)
 to look up code points if you're using [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts)
 
-## Things to do
+## Contributing
 
-- [ ] Additional flags/options
-- [ ] Tests
-- [x] Setup/config.yaml generator
+Contributions in the form of bug reports, pull requests, documentation updates, and feature requests are welcome.
+
+Please open an issue for any of the above.
