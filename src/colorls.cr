@@ -19,7 +19,7 @@ module Colorls
     option_long = false
     option_report = false
 
-    OptionParser.parse! do |parser|
+    OptionParser.parse do |parser|
       parser.banner = "Usage: colorls [arguments]"
       parser.on("-a", "--all", "Show all files & folders") { option_all = true }
       parser.on("-l", "--long", "Length-wise") { option_long = true }
