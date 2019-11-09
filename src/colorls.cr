@@ -60,16 +60,16 @@ module Colorls
       absolute_path = File.expand_path(relative_path)
 
       real_path = begin
-        File.real_path(relative_path)
+        File.real_path(absolute_path)
       rescue
-        File.readlink(relative_path)
+        File.readlink(absolute_path)
       end
 
-      file_type = if File.directory?(relative_path)
+      file_type = if File.directory?(absolute_path)
                     :directory
-                  elsif File.executable?(relative_path)
+                  elsif File.executable?(absolute_path)
                     :executable
-                  elsif File.symlink?(relative_path)
+                  elsif File.symlink?(absolute_path)
                     :symlink
                   else
                     :file
@@ -77,7 +77,7 @@ module Colorls
 
       # File size won't be found for a symlinked file that has a missing origin file
       file_size = begin
-        File.size(relative_path)
+        File.size(absolute_path)
       rescue
         0_u64
       end
@@ -88,7 +88,7 @@ module Colorls
                         file_or_dir
                       end
 
-      mtime = File.info(relative_path, follow_symlinks: false).modification_time
+      mtime = File.info(absolute_path, follow_symlinks: false).modification_time
       file_mtime = if Time.local.to_s("%Y") == mtime.to_s("%Y")
                      mtime.to_s("%b %e %H:%M")
                    else
@@ -100,14 +100,14 @@ module Colorls
         long_filename:     long_filename,
         size:              file_size,
         modification_time: file_mtime,
-        owner:             File.info(relative_path, follow_symlinks: false).owner,
-        group:             File.info(relative_path, follow_symlinks: false).group,
+        owner:             File.info(absolute_path, follow_symlinks: false).owner,
+        group:             File.info(absolute_path, follow_symlinks: false).group,
         type:              file_type,
         absolute_path:     absolute_path, # not used in styler
-        extension:         File.extname(relative_path),
+        extension:         File.extname(absolute_path),
         relative_path:     relative_path, # not used in styler
         real_path:         real_path,     # not used in styler
-        permissions:       File.info(relative_path, follow_symlinks: false).permissions,
+        permissions:       File.info(absolute_path, follow_symlinks: false).permissions,
       }
     end
 
