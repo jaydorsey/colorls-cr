@@ -13,11 +13,11 @@ dependencies:
   termbox:
     github: andrewsuzuki/termbox-crystal
 
-crystal: 0.31.0
+crystal: 0.31.1
 
 license: MIT
 
 development_dependencies:
   ameba:
     github: veelenga/ameba
-    version: ~> 0.10.0
+    version: ~> 0.10.1
