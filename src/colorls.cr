@@ -1,6 +1,8 @@
 require "option_parser"
 require "colorize"
 require "termbox"
+require "system/user"
+require "system/group"
 require "./colorls/*"
 require "./colorls/formatters/*"
 
@@ -53,7 +55,7 @@ module Colorls
       end
     }
 
-    files = Array({filename: String, long_filename: String, size: UInt64, modification_time: String, owner: UInt32, group: UInt32, type: Symbol, absolute_path: String, extension: String, relative_path: String, real_path: String, permissions: File::Permissions}).new
+    files = Array({filename: String, long_filename: String, size: UInt64, modification_time: String, owner: String, group: String, type: Symbol, absolute_path: String, extension: String, relative_path: String, real_path: String, permissions: File::Permissions}).new
 
     file_names.each do |file_or_dir|
       relative_path = File.join(path, file_or_dir)
@@ -95,13 +97,17 @@ module Colorls
                      mtime.to_s("%b %e  %Y")
                    end
 
+      # TODO: Cache owner & group so we only look them up once
+      owner = System::User.find_by(id: File.info(absolute_path, follow_symlinks: false).owner.to_s).to_s.gsub(/\([0-9]*\)$/, "")
+      group = System::Group.find_by(id: File.info(absolute_path, follow_symlinks: false).group.to_s).to_s.gsub(/\([0-9]*\)$/, "")
+
       files << {
         filename:          file_or_dir,
         long_filename:     long_filename,
         size:              file_size,
         modification_time: file_mtime,
-        owner:             File.info(absolute_path, follow_symlinks: false).owner,
-        group:             File.info(absolute_path, follow_symlinks: false).group,
+        owner:             owner,
+        group:             group,
         type:              file_type,
         absolute_path:     absolute_path, # not used in styler
         extension:         File.extname(absolute_path),
