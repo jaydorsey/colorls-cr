@@ -13,7 +13,7 @@ dependencies:
   termbox:
     github: andrewsuzuki/termbox-crystal
 
-crystal: 0.31.1
+crystal: 0.32.1
 
 license: MIT
 
